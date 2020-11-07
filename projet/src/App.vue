@@ -1,16 +1,15 @@
 <template>
   <div id="app">
-    <ListeDesRestaurant msg="Coucou"/>
+    <router-view></router-view> <!-- affiche ce qui correspond à l'url -->
   </div>
 </template>
 
 <script>
-import ListeDesRestaurant from './components/ListeDesRestaurant.vue'
 
 export default {
   name: 'App',
   components: {
-    ListeDesRestaurant
+    
   }
 }
 </script>

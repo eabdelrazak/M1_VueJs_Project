@@ -1,5 +1,6 @@
 <template>
-  <div class="hello">
+  <div>
+    <h1>Bienvenu dans HelloWorld : {{msg}}</h1>
   </div>
 </template>
 
