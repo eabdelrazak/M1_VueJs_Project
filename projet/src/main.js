@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 
 import ListeDesRestaurant from './components/ListeDesRestaurant.vue'
 import HelloWorld from './components/HelloWorld'
+import Restaurant from './components/Restaurant.vue'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
@@ -15,6 +16,10 @@ const router = new VueRouter ({
       // page d'acceuil
       path: '/', 
       component: ListeDesRestaurant
+    },
+    {
+      path: '/restaurant/:id', //:id -> dans le chemin il va y avoir un parametre qui s'appelle id
+      component: Restaurant
     },
     {
        path: '/hello',

@@ -46,10 +46,12 @@
         <th>Cuisine</th>
       </tr>
       <tbody>
-        <tr v-for="(r, index) in restaurants" :key="index" @click="supprimerRestaurant(r)" :style="{ backgroundColor: getColor(index) }">
+        <tr v-for="(r, index) in restaurants" :key="index" @click.stop="" :style="{ backgroundColor: getColor(index) }">
+          <!-- supprimerRestaurant(r)-->
           <!--v-bind:class="{bordureRouge:(index === 2)}"> recupere une propriete css et permet de mettre en pointillé une case -->
           <td>{{ r.name }}</td>
           <td>{{ r.cuisine }}</td>
+          <td><router-link :to="'/restaurant/' + r._id">[Detail d'un restaurant]</router-link></td>
         </tr>
       </tbody>
     </table>
