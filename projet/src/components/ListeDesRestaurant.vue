@@ -1,5 +1,32 @@
 <template>
   <div>
+    <v-card max-width="600px">
+      <v-card-text>
+        <v-form class="px-3"
+          ref="form"  lazy-validation >
+          <v-text-field
+            v-model="nom"
+            label="Nom"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-model="cuisine"
+            label="Cuisine"
+            required
+          ></v-text-field>
+
+          <v-btn
+            color="success"
+            class="mr-4"
+            @click="ajouterRestaurant($event)"
+          >
+            Validate
+          </v-btn>
+        </v-form>
+      </v-card-text>
+    </v-card>
+
     <form @submit.prevent="ajouterRestaurant($event)">
       <label>
         <!-- si on veut recup les donne de type cle vlaeur faut ajout un parametre name qui permet quand on va soumettre le formulaire dans le protocol http on aura ce formlaire contiendra un param name -->
@@ -46,18 +73,36 @@
         <th>Cuisine</th>
       </tr>
       <tbody>
-        <tr v-for="(r, index) in restaurants" :key="index" @click.stop="" :style="{ backgroundColor: getColor(index) }">
+        <tr
+          v-for="(r, index) in restaurants"
+          :key="index"
+          @click.stop=""
+          :style="{ backgroundColor: getColor(index) }"
+        >
           <!-- supprimerRestaurant(r)-->
           <!--v-bind:class="{bordureRouge:(index === 2)}"> recupere une propriete css et permet de mettre en pointillé une case -->
           <td>{{ r.name }}</td>
           <td>{{ r.cuisine }}</td>
-          <td><router-link :to="'/restaurant/' + r._id">[Detail d'un restaurant]</router-link></td>
+          <td>
+            <router-link :to="'/restaurant/' + r._id"
+              >[Detail d'un restaurant]</router-link
+            >
+          </td>
         </tr>
       </tbody>
     </table>
     <div class="slidecontainer">
-        <input @input="getRestaurantsFromServer()" type="range" min="5" max="1500" step="5" v-model="pageSize" class="slider" id="myRange">
-        <p>Nombre de restaurants par page : {{pageSize}} </p>
+      <input
+        @input="getRestaurantsFromServer()"
+        type="range"
+        min="5"
+        max="1500"
+        step="5"
+        v-model="pageSize"
+        class="slider"
+        id="myRange"
+      />
+      <p>Nombre de restaurants par page : {{ pageSize }}</p>
     </div>
   </div>
 </template>
@@ -81,6 +126,7 @@ export default {
       currentPage: 0,
       pageSize: 5,
       rechercheNomRestaurant: "",
+      post: [],
     };
   },
   mounted() {
@@ -160,8 +206,8 @@ export default {
     }, 300),
     getRestaurantsFromServer() {
       let url =
-        "http://localhost:8080/api/restaurants?" +
-        "page=" +
+        "http://localhost:8080/api/restaurants" +
+        "?page=" +
         this.currentPage +
         "&pagesize=" +
         this.pageSize +
@@ -174,7 +220,7 @@ export default {
           this.restaurants = reponseJson.data;
           this.nbRestaurantTotal = reponseJson.count;
           this.nbPageTotal = Math.round(reponseJson.count / this.pageSize);
-          //console.log(reponseJson.data);
+          console.log(reponseJson.data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -196,51 +242,51 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 table {
-    border: 1px solid black;
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    margin-bottom: 20px;
+  border: 1px solid black;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 tr,
 td {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 td {
-    padding: 5px;
+  padding: 5px;
 }
 
 .slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 15px;
-    border-radius: 5px;  
-    background: #d3d3d3;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-  }
-  
-  .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%; 
-    background: #4CAF50;
-    cursor: pointer;
-  }
-  
-  .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-  }
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
 
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+}
 </style>
