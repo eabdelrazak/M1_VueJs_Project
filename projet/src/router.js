@@ -3,7 +3,7 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
-import ListeDesRestaurant from './components/ListeDesRestaurant.vue'
+import AjouterRestaurant from './components/AjouterRestaurant.vue'
 import Acceuil from './components/Acceuil'
 import Restaurant from './components/Restaurant.vue'
 
@@ -21,7 +21,7 @@ export default new Router ({
     },
     {
        path: '/add',
-       component: ListeDesRestaurant
+       component: AjouterRestaurant
     }
   ],
   mode : 'history',

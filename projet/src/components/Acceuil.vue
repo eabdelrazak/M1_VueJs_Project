@@ -1,5 +1,4 @@
 <template>
-  <div>
     <v-container fluid>
       <v-layout row>
         <v-flex md4>
@@ -36,34 +35,6 @@
                 </v-col>
               </v-row>
             </v-card-text>  
-
-            <!--<v-form
-              class="px-3"
-              ref="form"
-              @submit.prevent="ajouterRestaurant"
-              lazy-validation
-            >
-              <v-card-text>
-                <v-row class="mb-n10">
-                  <v-col>
-                    <v-text-field v-model="nom" label="Nom" required />
-                  </v-col>
-                </v-row>
-                <v-row class="mb-n10">
-                  <v-col>
-                    <v-text-field v-model="cuisine" label="Cuisine" required />
-                  </v-col>
-                </v-row>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="hide()"> Cancel </v-btn>
-                <v-btn class="mr-5" type="submit" color="success">
-                  Valider
-                </v-btn>
-              </v-card-actions>
-            </v-form>-->
           </v-card>
 
           <!-- Pagination -->
@@ -123,7 +94,6 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </div>
 </template>
 
 <script>
@@ -131,6 +101,7 @@ import axios from "axios";
 import _ from "lodash";
 
 export default {
+  name:"Acceuil",
   mounted() {
     console.log("AVANT RENDU HTML"),
       window.addEventListener("resize", this.handleResize),
@@ -232,6 +203,19 @@ export default {
       this.pageCourante = value;
       this.getRestaurantsFromServer();
     },
+    nextPage() {
+      if (this.currentPage === this.nbPageTotal) return;
+      this.currentPage++;
+      //this.getRestaurantsFromServer();
+    },
+    previousPage() {
+      if (this.currentPage === 0) return;
+      this.currentPage--;
+      //this.getRestaurantsFromServer();
+    },
   },
 };
 </script>
+<style>
+  html { overflow-y: hidden }
+</style>
