@@ -26,4 +26,5 @@ npm install vuetify --save
 - Affichage dynamique d'information
 
 ```
-https://ibb.co/gw4Sh73
+
+![Alt text](https://ibb.co/gw4Sh73)
