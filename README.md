@@ -23,7 +23,7 @@ Pour lancer le client : cd projet/client puis npm run server
 Avant de lancer rassurez vous que les port 8080 (serveur) et 8081 (client) sont libres
 ```
 
-### Points du projet
+## Points du projet
 ```
 - Ce projet se base sur une base de données local sur mongo
 - Utilisation de la bibliothèque graphique vuetify
@@ -35,4 +35,4 @@ Avant de lancer rassurez vous que les port 8080 (serveur) et 8081 (client) sont 
 
 ```
 
-### Vidéo Youtube
+## Vidéo Youtube
