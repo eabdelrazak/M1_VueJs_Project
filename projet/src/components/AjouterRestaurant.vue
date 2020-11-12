@@ -1,7 +1,7 @@
 <template>
-  <v-container >
-    <v-layout row >
-      <v-flex >
+  <v-container>
+    <v-layout row wrap>
+      <v-flex>
         <!-- Carte pour effectuer une rechercher ou modifier le nombre d'affichage de restaurant -->
         <v-card class="ma-2" dark>
           <v-card-text>
@@ -12,11 +12,12 @@
                 </v-card-title>
               </v-col>
             </v-row>
+            <!-- permet d'éviter quela page se recharge -->
             <v-form class="px-3" ref="form" @submit.prevent="ajouterRestaurant">
               <v-row class="mx-4">
                 <v-col>
                   <v-text-field
-                    v-model="name"
+                    v-model="nom"
                     prepend-icon="mdi-home"
                     label="Name"
                     :rules="[(v) => !!v || 'Required!']"
@@ -25,7 +26,7 @@
                 </v-col>
                 <v-col>
                   <v-text-field
-                    v-model="cuisine"
+                    v-model="cook"
                     label="Cook"
                     :rules="[(v) => !!v || 'Required!']"
                     hide-details
@@ -67,16 +68,16 @@
               <v-row class="mx-4">
                 <v-col>
                   <v-text-field
-                    v-model="longitude"
+                    v-model="latitude"
                     prepend-icon="mdi-home"
-                    label="Longitude"
+                    label="Latitude"
                     hide-details
                   ></v-text-field>
                 </v-col>
                 <v-col>
                   <v-text-field
-                    v-model="latitude"
-                    label="Latitude"
+                    v-model="longitude"
+                    label="Longitude"
                     hide-details
                   ></v-text-field>
                 </v-col>
@@ -84,9 +85,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn text to="/"> Cancel </v-btn>
-                <v-btn class="mr-5" type="submit" color="success">
-                 Send
-                </v-btn>
+                <v-btn class="mr-5" type="submit" color="success"> Send </v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -107,16 +106,18 @@ export default {
         height: 0,
       },
       restaurants: [],
-      name: "",
-      cuisine: "",
-      building: "",
+      nom: "",
+      cook: "",
+      building: "Building",
       address: {},
-      street: "",
-      zipcode: "",
+      street: "Street",
+      zipcode: "00000",
       coord: [],
-      borough: "",
-      longitude: "",
-      latitude: "",
+      borough: "Ville",
+      longitude: 0,
+      latitude: 0,
+      valueCount: 0,
+      booleanConfirm: "",
       post: [],
     };
   },
@@ -129,46 +130,92 @@ export default {
   },
   methods: {
     ajouterRestaurant() {
-      this.coord[0]=this.longitude
-      this.coord[1]=this.latitude
-      this.address.building = this.building
-      this.address.street = this.street
-      this.address.zipcode = this.zipcode
-      this.address.coord = this.coord
+      let myData = new FormData();
 
-      let data = {
-        name: this.nom,
-        cuisine: this.cuisine,
-        address: this.address,
-        borough: this.borough,
-      };
-      console.log(data);
+      myData.set("name", this.nom)
+      myData.append("cuisine", this.cook)
+      myData.append("borough", this.borough)
+      myData.append("building", this.building)
+      myData.append("street", this.street)
+      myData.append("longitude", this.longitude)
+      myData.append("latitude", this.latitude)
+      myData.append("zipcode", this.zipcode)
+
+      //console.log(data);
 
       let url = "http://localhost:8080/api/restaurants/";
+      let isExist = this.verifierSiExist(
+        "http://localhost:8080/api/restaurants?name=" + this.nom
+      );
+      console.log(isExist);
 
       if (this.nom !== "" && this.cuisine !== "" && this.borough !== "") {
-        axios
-          .post(url, {
-            body: data,
-          })
-          .then((response) => {
-            // JSON responses are automatically parsed.
-            console.log(response.msg);
-          })
-          .catch((e) => {
-            this.errors.push(e);
-          });
+        if (isExist) {
+          this.confirmBox();
+          if (this.booleanConfirm) {
+            this.requetePost(url, myData)
+          }
+        } else {
+          this.requetePost(url, myData)
+        }
       } else {
-        window.alert("Make sure that you have filled in all the necessary fields ");
+        window.alert(
+          "Make sure that you have filled in all the necessary fields "
+        );
+      }
+    },
+    requetePost(myurl, mydata) {
+      axios({
+        method: 'post',
+        url: myurl,
+        data: mydata
+      }).then((response) => {
+          console.log(response)
+          console.log(response.data)
+          this.requeteGet(myurl)
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+        this.requeteGet("http://localhost:8080/api/restaurants");
+    },
+    requeteGet(url){
+       axios
+        .get(url)
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+    verifierSiExist(url) {
+      axios
+        .get(url, {})
+        .then((response) => {
+          // JSON responses are automatically parsed
+          this.valueCount = response.data.count;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+      console.log(this.valueCount);
+      if (this.valueCount === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    confirmBox() {
+      if (confirm("The name already exist ! Do you wish to continue ?")) {
+        this.booleanConfirm = true;
+      } else {
+        this.booleanConfirm = false;
       }
     },
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight * 0.8;
-      //console.log('taille '+this.window.height)
     },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+

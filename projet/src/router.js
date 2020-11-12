@@ -5,7 +5,7 @@ Vue.use(Router);
 
 import AjouterRestaurant from './components/AjouterRestaurant.vue'
 import Acceuil from './components/Acceuil'
-import Restaurant from './components/Restaurant.vue'
+import Detail from './components/Detail.vue'
 
 // Définition des routes
 export default new Router ({
@@ -16,8 +16,8 @@ export default new Router ({
       component: Acceuil
     },
     {
-      path: '/restaurant/:id', //:id -> dans le chemin il va y avoir un parametre qui s'appelle id
-      component: Restaurant
+      path: '/detail/:id', //:id -> dans le chemin il va y avoir un parametre qui s'appelle id
+      component: Detail
     },
     {
        path: '/add',
