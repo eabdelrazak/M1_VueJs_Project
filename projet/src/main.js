@@ -1,33 +1,24 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueRouter from 'vue-router'
+import router from './router'
+import axios from './http-common'
+import vuetify from './plugins/vuetify';
 
-import ListeDesRestaurant from './components/ListeDesRestaurant.vue'
-import HelloWorld from './components/HelloWorld'
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
+import 'leaflet-defaulticon-compatibility';
+
+Vue.component('l-map', LMap);
+Vue.component('l-tile-layer', LTileLayer);
+Vue.component('l-marker', LMarker);
 
 Vue.config.productionTip = false
-Vue.use(VueRouter);
-
-// Définition des routes
-const router = new VueRouter ({
-  routes: [
-    {
-      // page d'acceuil
-      path: '/', 
-      component: ListeDesRestaurant
-    },
-    {
-       path: '/hello',
-       component: HelloWorld,
-       props: {
-         msg : "Coucou la Miage"
-       }
-    }
-  ],
-  mode : 'history'
-})
 
 new Vue({
   router,
-  render: h => h(App),
+  vuetify,
+  axios,
+  render: h => h(App)
 }).$mount('#app')
