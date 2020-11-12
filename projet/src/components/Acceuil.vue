@@ -56,40 +56,70 @@
       <v-flex md8>
         <v-card class="ma-2">
           <!-- Génère un loader pendant le temps de chargement de la base de données dans le tableau -->
-          <v-data-table
+          <!--<v-data-table
+          v-if="restaurants.length < 1"
             loading
-            v-if="restaurants.length < 1"
             loading-text="Veuillez patienter le contenu se charge..."
             :hide-default-footer="true"
-          ></v-data-table>
+          ></v-data-table> -->
           <!-- Permet d'afficher le tableau avec les différents éléments récupérer dans la base de données -->
-          <v-simple-table fixed-header :height="this.window.height">
-            <thead>
-              <tr>
-                <th class="text-left font-weight-bold">Name</th>
-                <th class="text-left font-weight-bold">Cook</th>
-                <th class="text-left font-weight-bold">City</th>
-                <th class="text-left font-weight-bold">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in restaurants" :key="index">
-                <td width="30%">{{ item.name }}</td>
-                <td width="30%">{{ item.cuisine }}</td>
-                <td width="25%">{{ item.borough }}</td>
-                <td width="15%" class="pa-0">
-                  <v-icon small class="mr-4" @click="supprimerRestaurant(item)"
-                    >mdi-delete</v-icon
-                  >
-                  <router-link :to="'/detail/' + item._id"
-                    ><v-icon small> mdi-loupe</v-icon></router-link
-                  >
-                </td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-
-          
+          <div v-if="!ready">
+            <v-data-table
+              loading
+              loading-text="Please wait for the content to load..."
+              :hide-default-footer="true"
+            ></v-data-table>
+          </div>
+          <div v-else-if="!this.restaurants.length">
+            <v-simple-table fixed-header :height="this.window.height">
+              <thead>
+                <tr>
+                  <th class="text-left font-weight-bold">Name</th>
+                  <th class="text-left font-weight-bold">Cook</th>
+                  <th class="text-left font-weight-bold">City</th>
+                  <th class="text-left font-weight-bold">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td width="30%">No Data Found</td>
+                  <td width="30%"></td>
+                  <td width="25%"></td>
+                  <td width="15%"></td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
+          <div v-else>
+            <v-simple-table fixed-header :height="this.window.height">
+              <thead>
+                <tr>
+                  <th class="text-left font-weight-bold">Name</th>
+                  <th class="text-left font-weight-bold">Cook</th>
+                  <th class="text-left font-weight-bold">City</th>
+                  <th class="text-left font-weight-bold">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in restaurants" :key="index">
+                  <td width="30%">{{ item.name }}</td>
+                  <td width="30%">{{ item.cuisine }}</td>
+                  <td width="25%">{{ item.borough }}</td>
+                  <td width="15%" class="pa-0">
+                    <v-icon
+                      small
+                      class="mr-4"
+                      @click="supprimerRestaurant(item)"
+                      >mdi-delete</v-icon
+                    >
+                    <router-link :to="'/detail/' + item._id"
+                      ><v-icon small> mdi-loupe</v-icon></router-link
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </div>
         </v-card>
       </v-flex>
     </v-layout>
@@ -114,14 +144,13 @@ export default {
         width: 0,
         height: 0,
       },
-      dialog: false,
+      ready: false,
       pageItems: [10, 20, 30, 40, 50, 100, 500],
       nbRestaurantTotal: 0,
       nbPageTotal: 0,
       valeurNombreLigne: 10,
       pageCourante: 0,
       restaurants: [],
-      errors: [],
       nom: "",
       cuisine: "",
       nomRecherche: "",
@@ -153,12 +182,13 @@ export default {
           this.nbPageTotal = Math.ceil(
             this.nbRestaurantTotal / this.valeurNombreLigne
           );
+          this.ready = true;
           console.log(response.data);
           console.log(response.data.data);
           console.log(response.data.data[0].grades[0]);
         })
         .catch((e) => {
-          this.errors.push(e);
+          console.log(e);
         });
     },
     supprimerRestaurant(r) {
@@ -173,7 +203,7 @@ export default {
           this.getRestaurantsFromServer();
         })
         .catch((e) => {
-          this.errors.push(e);
+          console.log(e);
         });
     },
     handleResize() {
@@ -199,7 +229,7 @@ export default {
           }
         })
         .catch((e) => {
-          this.errors.push(e);
+          console.log(e);
         });
     },
   },
