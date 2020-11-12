@@ -15,6 +15,14 @@ npm install vuetify --save
 
 ```
 
+## Lancer le projet
+```
+Pour lancer le server : cd projet/server puis node serverCrudWithMongo.js
+Pour lancer le client : cd projet/client puis npm run server 
+
+Avant de lancer rassurez vous que les port 8080 (serveur) et 8081 (client) sont libres
+```
+
 ### Points du projet
 ```
 - Ce projet se base sur une base de données local sur mongo
