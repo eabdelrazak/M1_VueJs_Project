@@ -6,6 +6,7 @@ Installer MongoDB en tant que service
 Installer NodeJs et NPM 
 ```
 ```
+Les bibliothèques utilisées : 
 npm install axios --save 
 npm install leaflet vue2-leaflet --save
 npm install leaflet-defaulticon-compatibility --save
