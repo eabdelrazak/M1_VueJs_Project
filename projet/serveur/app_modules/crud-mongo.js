@@ -190,7 +190,8 @@ exports.updateRestaurant = function (id, formData, callback) {
 
 		if (!err) {
 			let myquery = { "_id": ObjectId(id) };
-			
+
+
 			let newvalues = {
 				name: formData.name,
 				cuisine: formData.cuisine,
@@ -205,6 +206,9 @@ exports.updateRestaurant = function (id, formData, callback) {
 					]
 				}
 			};
+
+			console.log(newvalues)
+			console.log(formData.longitude)
 
 
 			db.collection("restaurants")

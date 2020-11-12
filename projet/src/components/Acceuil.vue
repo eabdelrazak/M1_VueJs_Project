@@ -56,12 +56,7 @@
       <v-flex md8>
         <v-card class="ma-2">
           <!-- Génère un loader pendant le temps de chargement de la base de données dans le tableau -->
-          <!--<v-data-table
-          v-if="restaurants.length < 1"
-            loading
-            loading-text="Veuillez patienter le contenu se charge..."
-            :hide-default-footer="true"
-          ></v-data-table> -->
+          
           <!-- Permet d'afficher le tableau avec les différents éléments récupérer dans la base de données -->
           <div v-if="!ready">
             <v-data-table
@@ -105,7 +100,7 @@
                   <td width="30%">{{ item.name }}</td>
                   <td width="30%">{{ item.cuisine }}</td>
                   <td width="25%">{{ item.borough }}</td>
-                  <td width="15%" class="pa-0">
+                  <td width="15%">
                     <v-icon
                       small
                       class="mr-4"
